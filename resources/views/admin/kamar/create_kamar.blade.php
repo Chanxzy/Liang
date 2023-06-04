@@ -44,7 +44,7 @@
                         
                         <div class="form-group">
                             <label>Harga</label>
-                            <textarea name="harga" class="form-control" placeholder="harga ..."></textarea>
+                            <input type="number" name="harga" class="form-control" placeholder="harga ..."></input>
                             @if($errors->has('harga'))
                                 <div class="text-danger">
                                     {{ $errors->first('harga')}}
@@ -53,7 +53,11 @@
                         </div>
                         <div class="form-group">
                             <label>Katagori</label>
-                            <textarea name="katagori" class="form-control" placeholder="katagori ..."></textarea>
+                            <select name="katagori" class="form-control" placeholder="katagori ...">
+                                @foreach ( $katagori as $ka)
+                                <option value="{{ $ka->id }}">{{ $ka->nama_katagori }}</option>
+                                @endforeach
+                            </select>
                             @if($errors->has('katagori'))
                                 <div class="text-danger">
                                     {{ $errors->first('katagori')}}
@@ -62,7 +66,7 @@
                         </div>
                         <div class="form-group">
                             <label>Kapasitas</label>
-                            <textarea name="kapasitas" class="form-control" placeholder="kapasitas ..."></textarea>
+                            <input type="number" name="kapasitas" class="form-control" placeholder="kapasitas ..."></input>
                             @if($errors->has('kapasitas'))
                                 <div class="text-danger">
                                     {{ $errors->first('kapasitas')}}

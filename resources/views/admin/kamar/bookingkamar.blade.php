@@ -24,14 +24,15 @@
                         </thead>
                         
                         <tbody>
-                            @foreach($kamar as $k)
+                            @foreach($kamars as $k)
                             <tr>
                                 <td>{{ $k->nomor_kamar }}</td>
                                 <td>
                                     <img src="{{ $k->Gambar }}" style="max-width: 80px" alt="">
                                 </td>
                                 <td>{{ $k->harga }}</td>
-                                <td>{{ $k->katagori }}</td>
+                                {{ dd($k->katagori) }}
+                                <td>{{ $k->katagori}}</td>
                                 <td>{{ $k->kapasitas }}</td>
                                 <td>{{ $k->keterangan }}</td>
                                 <td> 

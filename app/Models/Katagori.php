@@ -16,7 +16,8 @@ class Katagori extends Model
         'nama_katagori',
     ];
 
-    public function kamar (){
-        return $this->belongsTo(Kamar::class);
+    public function kamars()
+    {
+        return $this->hasMany(Kamar::class);
     }
 }

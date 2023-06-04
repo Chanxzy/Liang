@@ -19,10 +19,10 @@ class Kamar extends Model
         'katagori',
         'kapasitas',
         'keterangan',
-        
     ];
 
-    public function katagori (){
-        return $this->hasMany(Katagori::class);
+    public function katagori()
+    {
+        return $this->belongsTo(Katagori::class, 'katagori');
     }
 }

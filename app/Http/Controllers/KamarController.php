@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Kamar;
+use App\Models\Katagori;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,8 +16,8 @@ class KamarController extends Controller
      */
     public function index()
     {
-        $kamar = Kamar::all();
-        return view('admin.kamar.bookingkamar',['kamar' => $kamar]);
+        $kamars = Kamar::with('katagori')->get();
+        return view('admin.kamar.bookingkamar', compact('kamars'));
     }
 
     /**
@@ -24,7 +25,8 @@ class KamarController extends Controller
      */
     public function create()
     {
-        return view('admin.kamar.create_kamar');
+        $katagori = Katagori::all();
+        return view('admin.kamar.create_kamar', ['katagori' => $katagori]);
     }
 
     /**
