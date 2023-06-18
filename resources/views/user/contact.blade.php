@@ -19,5 +19,7 @@
     <hr>
 </body>
 
-@include('partial.footer')
+<footer style="position: absolute; bottom: 0; width:100%">
+    @include('partial.footer')
+</footer>
 </html>

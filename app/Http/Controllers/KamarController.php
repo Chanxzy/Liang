@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Kamar;
 use App\Models\Katagori;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
 
 class KamarController extends Controller
 {
@@ -16,8 +15,8 @@ class KamarController extends Controller
      */
     public function index()
     {
-        $kamars = Kamar::with('katagori')->get();
-        return view('admin.kamar.bookingkamar', compact('kamars'));
+        $kamar = Kamar::with('katagori','gambar')->get();
+        return view('admin.kamar.bookingkamar', ['kamar' => $kamar]);
     }
 
     /**
@@ -34,32 +33,16 @@ class KamarController extends Controller
      */
     public function store(Request $request)
     {
-        // $file = $request->file('Gambar');
-
-        // $filename = time() . '_' . $file->getClientOriginalName();
-        // $path = $file->storeAs('images', $filename);
-        // $url = Storage::url($path);
-
-        // dd($url);
-
-        
-        if ($request->hasFile('Gambar')) {
-            $filename = $request->file('Gambar')->getClientOriginalName();
-            $request->file('Gambar')->move('hasilgambar/', $filename);
-            $url = asset('hasilgambar/' . $filename);
-        }
 
         $kamar = Kamar::create([
             'nomor_kamar' => $request->input('nomor_kamar'),
-            'Gambar' => $url,
             'harga' => $request->input('harga'),
-            'katagori' => $request->input('katagori'),
+            'katagori_id' => $request->input('katagori_id'),
             'kapasitas' => $request->input('kapasitas'),
             'keterangan' => $request->input('keterangan'),
         ]);
 
         return redirect('kamar');
-
     }
 
     /**
@@ -75,10 +58,10 @@ class KamarController extends Controller
      */
     public function edit(string $id)
     {
-        
-        $kamar = Kamar::findOrFail($id);
+        $katagori = Katagori::all();
+        $kamar = Kamar::with('katagori')->findOrFail($id);
 
-        return view('admin.kamar.edit_kamar',['kamar' => $kamar]);
+        return view('admin.kamar.edit_kamar', ['kamar' => $kamar, 'katagori' => $katagori]);
     }
 
     /**
@@ -88,9 +71,8 @@ class KamarController extends Controller
     {
         $kamar = Kamar::findOrFail($id);
         $kamar->nomor_kamar = $request->input('nomor_kamar');
-        $kamar->Gambar = $request->input('Gambar');
+        $kamar->katagori_id=$request->input('katagori_id');
         $kamar->harga = $request->input('harga');
-        $kamar->katagori = $request->input('katagori');
         $kamar->kapasitas = $request->input('kapasitas');
         $kamar->keterangan = $request->input('keterangan');
 
@@ -104,7 +86,7 @@ class KamarController extends Controller
      */
     public function destroy(string $id)
     {
-        $kamar = Kamar::destroy($id);
+        Kamar::destroy($id);
 
         return redirect('kamar');
     }

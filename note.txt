@@ -1,0 +1,7 @@
+menu order setelah login. dalam order ada menu pembayaran, upload bukti, dan pembatalan. 
+hbis pesan ke redirect ke order.
+status bayar ganti dengan status.
+order
+kode otp email
+notip
+laporan

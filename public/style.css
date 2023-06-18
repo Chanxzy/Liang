@@ -28,7 +28,8 @@
     background-image: url(img/foto/pool/AR307469_1600_1067.jpg);
     background-size: cover;
     max-width: 100%;
-    height: auto;
+    height: 50vh;
+    background-repeat: no-repeat;
     
 }
 .banner-image-amenities {

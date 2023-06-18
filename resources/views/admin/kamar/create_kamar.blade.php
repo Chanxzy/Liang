@@ -31,16 +31,6 @@
                                 </div>
                             @endif
                         </div>
-
-                        <div class="form-group">
-                            <label>Gambar</label>
-                            <input type="file" name="Gambar" class="form-control" id="Gambar" placeholder="Gambar ...">
-                            @if($errors->has('Gambar'))
-                                <div class="text-danger">
-                                    {{ $errors->first('Gambar')}}
-                                </div>
-                            @endif
-                        </div>
                         
                         <div class="form-group">
                             <label>Harga</label>
@@ -53,9 +43,9 @@
                         </div>
                         <div class="form-group">
                             <label>Katagori</label>
-                            <select name="katagori" class="form-control" placeholder="katagori ...">
-                                @foreach ( $katagori as $ka)
-                                <option value="{{ $ka->id }}">{{ $ka->nama_katagori }}</option>
+                            <select name="katagori_id" class="form-control">
+                                @foreach ($katagori as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nama_katagori }}</option>
                                 @endforeach
                             </select>
                             @if($errors->has('katagori'))

@@ -13,7 +13,7 @@
     @include('partial.navbar')
 
     <!-- Banner Image -->
-    <div class="banner-image w-100 vh-100 d-flex justify-content-center align-items-center">
+    <div class="banner-image d-flex justify-content-center align-items-center">
         <div class="content text-center">
             <h1 data-aos="fade-up" class="banner text-white">
                 <span class="banner1">Welcome</span> <br />
@@ -47,7 +47,7 @@
     <section class="container sproduct justify-content-center my-3">
         <div class="row mt-3"> 
             <div class="col-lg-5 col-xl-12 col-12">
-                <img class="img-fluid w-100 pb-1 h-2" src="img/foto/dining/AR307482_1600_1067.jpg" id="MainImg" alt="">
+                <img class="img-fluid w-100 pb-1" style="height: 50vh" src="img/foto/dining/AR307482_1600_1067.jpg" id="MainImg" alt="">
     
                 <div class="small-img-group pt-1">
                     <div class="small-img-col pe-1">

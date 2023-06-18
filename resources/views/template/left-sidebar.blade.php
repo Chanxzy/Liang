@@ -1,4 +1,4 @@
-<ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: #EF008C;" id="accordionSidebar">
+<ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: #92508a;" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -25,46 +25,39 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="/kamar">
+        <a class="nav-link" href="/pesanan">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Master Kamar</span></a>
-    </li>   
+            <span>Pesanan</span></a>
+    </li>  
+    
     <li class="nav-item">
-        <a class="nav-link" href="/katagori">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Katagori</span></a>
-    </li>   
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Addons
-    </div>
-
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-            aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Data Master</span>
         </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages"
-            data-parent="#accordionSidebar">
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Login Screens:</h6>
-                <a class="collapse-item" href="login.html">Login</a>
-                <a class="collapse-item" href="/user">Register</a>
-                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Other Pages:</h6>
-                <a class="collapse-item" href="404.html">404 Page</a>
-                <a class="collapse-item" href="blank.html">Blank Page</a>
+                <a class="collapse-item" href="/kamar">Data Kamar</a>
+                <a class="collapse-item" href="/katagori">Data Katagori</a>
+                <a class="collapse-item" href="/gambar">Data Gambar</a>
             </div>
         </div>
     </li>
-
+<li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pesanan"
+            aria-expanded="true" aria-controls="pesanan">
+            <i class="fas fa-fw fa-shopping-cart"></i>
+            <span>Data Akun</span>
+        </a>
+        <div id="pesanan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="login.html">Login</a>
+                <a class="collapse-item" href="/user">Register</a>
+                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+            </div>
+        </div>
+    </li>
 
 
     <!-- Divider -->

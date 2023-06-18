@@ -1,4 +1,5 @@
 @extends('template.admin')
+@include('partial.style')
 @section('konten')
         <div class="container">
             <div class="card mt-5">
@@ -24,15 +25,30 @@
                         </thead>
                         
                         <tbody>
-                            @foreach($kamars as $k)
+                            @foreach($kamar as $k)
                             <tr>
                                 <td>{{ $k->nomor_kamar }}</td>
                                 <td>
-                                    <img src="{{ $k->Gambar }}" style="max-width: 80px" alt="">
+                                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            @foreach ( $k->gambar as $gak )
+                                            <div class="carousel-item active">
+                                                <img src="{{ $gak->gambar}}" class="d-block w-100" alt="...">
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
                                 </td>
                                 <td>{{ $k->harga }}</td>
-                                {{ dd($k->katagori) }}
-                                <td>{{ $k->katagori}}</td>
+                                <td>{{ $k->katagori->nama_katagori}}</td>
                                 <td>{{ $k->kapasitas }}</td>
                                 <td>{{ $k->keterangan }}</td>
                                 <td> 

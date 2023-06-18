@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
-        <title>Villa Liang</title>
+        <title>Tambah Data Pesanan</title>
     </head>
 
     <body>
@@ -15,51 +15,43 @@
                 </div>
                 
                 <div class="card-body">
-                    <a href="/user" class="btn btn-primary">Kembali</a>
+                    <a href="/pesanan" class="btn btn-primary">Kembali</a>
                     <br/>
                     <br/>
                     
-                    <form method="post" action="{{ route("tambahakun") }}" enctype="multipart/form-data">
+                    <form method="post" action="{{ route("tambahpesanan") }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="name">
-                            @if($errors->has('name'))
+                            <label>Check In</label>
+                            <input type="date" name="checkin" class="form-control" placeholder="checkin ...">
+                            @if($errors->has('konfliktanggal'))
                                 <div class="text-danger">
-                                    {{ $errors->first('name')}}
+                                    {{ $errors->first('konfliktanggal')}}
                                 </div>
                             @endif
                         </div>
 
                         <div class="form-group">
-                            <label>username</label>
-                            <input  name="username" class="form-control"  placeholder="username">
-                            @if($errors->has('username'))
+                            <label>Check Out</label>
+                            <input type="date" name="checkout" class="form-control" id="checkout" placeholder="checkout ...">
+                            @if($errors->has('konfliktanggal'))
                                 <div class="text-danger">
-                                    {{ $errors->first('username')}}
+                                    {{ $errors->first('konfliktanggal')}}
                                 </div>
                             @endif
                         </div>
                         
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" name="email" class="form-control" placeholder="email"></input type="email">
-                            @if($errors->has('email'))
+                            <label>Jumlah</label>
+                            <input type="number" name="jumlah" class="form-control" placeholder="jumlah ..."></input>
+                            @if($errors->has('jumlah'))
                                 <div class="text-danger">
-                                    {{ $errors->first('email')}}
+                                    {{ $errors->first('jumlah')}}
                                 </div>
                             @endif
                         </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="password"></input type="password">
-                            @if($errors->has('password'))
-                                <div class="text-danger">
-                                    {{ $errors->first('password')}}
-                                </div>
-                            @endif
-                        </div>
+                        
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Simpan">
                         </div>

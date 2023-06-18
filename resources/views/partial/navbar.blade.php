@@ -42,7 +42,7 @@
               </li>
               <li>
                 <a href="login">
-                  <img src="img/icon/profile.png" width="29" height="29" alt="">
+                  <img src="{{ asset('gambarkamar/profile.png') }}" width="29" height="29" alt="">
                 </a>
               </li>
               <li><hr class="dropdown-divider" /></li>

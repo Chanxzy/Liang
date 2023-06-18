@@ -6,19 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Kamar;
 
-class Katagori extends Model
+class Gambar extends Model
 {
     use HasFactory;
 
-    protected $table = 'katagori';
+    protected $table = 'gambar';
     protected $primaryKey = "id";
 
     protected $fillable = [
-        'nama_katagori', 'id',
+        'gambar','kamar_id',
     ];
 
     public function kamar()
     {
-        return $this->hasMany(Kamar::class);
+        return $this->belongsTo(Gambar::class, 'kamar_id');
     }
 }
