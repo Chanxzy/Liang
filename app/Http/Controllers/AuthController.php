@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\User;
-
+use App\Mail\forgotpass;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Exception;
 
 class AuthController extends Controller
 {
@@ -19,22 +23,23 @@ class AuthController extends Controller
     }
     
     public function login(Request $request)
-    {
-        $credentials = $request->only('username', 'password');
+{
+    $credentials = $request->only('username', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            session()->flash('success', 'Login successful');
-            if ($user->role == "admin") {
-                return redirect()->intended('/dashboard');
-            }
-            return redirect()->intended('/');
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        session()->flash('success', 'Login successful');
+        if ($user->role == "admin") {
+            return redirect()->intended('/dashboard');
         }
-
-        return redirect()->back()->withErrors([
-            'username' => 'Invalid credentials.',
-        ]);
+        return redirect()->intended('/');
     }
+
+    return redirect()->back()->withErrors([
+        'error' => 'Invalid credentials.',
+    ]);
+}
+
     
     public function showRegistrationForm()
     {
@@ -57,6 +62,19 @@ class AuthController extends Controller
         return redirect()->intended('login');
     }
 
+    public function create_admin(Request $request){
+
+        $role = User::create([
+            'role' => $request->input('role'),
+            'username' => $request->input('username'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+
+        return redirect('registakun');
+    }
+
     /**
      * CRUD
      */
@@ -65,7 +83,6 @@ class AuthController extends Controller
     {
         $user = User::all();
         return view('admin.akun.regisakun',['user' => $user]);
-
     }
 
 
@@ -123,5 +140,46 @@ class AuthController extends Controller
         $user = User::destroy($id);
 
         return redirect('user');
+    }
+
+    public function forgotpass(Request $request){
+        $user = User::where('email',$request->input('email'))->first();
+
+        $token = Str::random(32);
+        DB::table('password_reset_tokens')->insert(['email'=>$user->email, 'token'=>$token]);
+        Mail::to($user->email)->send(new forgotpass(['token'=>$token]));
+        
+        return redirect('/formforgotpass');
+    }
+
+    public function formforgotpass(){
+        return view('auth.forgotpass');
+    }
+
+    public function formresetpassword($token){
+        return view('auth.formresetpassword', ['token'=>$token]);
+    }
+
+    public function resetpassword(Request $request, $token ){
+        
+        $user = DB::table('password_reset_tokens')->where('token', $token)->first();
+    
+        if (!$user) {
+            throw new Exception('User not found');
+        }
+        if ($request->input('password') != $request->input('confirm_password')) {
+            throw new Exception('Password not match');
+        }
+        User::where('email', $user->email)->update(['password'=> bcrypt($request->input('password'))]);
+        DB::table('password_reset_tokens')->where('token', $token)->delete();
+
+        return redirect('/login');
+    }
+    
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
     }
 }

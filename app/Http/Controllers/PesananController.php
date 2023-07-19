@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 use App\Models\Pesanan;
 use App\Models\Kamar;
-use Carbon\Carbon;
-
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EmailCustomer;
+use App\Mail\EmailOrder;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\UpdateStatus;
+use PDF;
 
 class PesananController extends Controller
 {
@@ -15,8 +22,16 @@ class PesananController extends Controller
      */
     public function index()
     {
-        $pesanan = Pesanan::all();
-        return view('admin.pesanan.pesanan', ['pesanan' => $pesanan]);
+
+    $pesanan = DB::table('pesanan')
+        ->join('kamar', 'pesanan.id_kamar', '=', 'kamar.id')
+        ->join('users', 'pesanan.id_pelanggan', '=', 'users.id')
+        ->join('katagori', 'kamar.katagori_id', '=', 'katagori.id')
+        ->select('pesanan.id as pesanan_id', 'kamar.*', 'users.*', 'katagori.*', 'pesanan.*')
+        ->orderByDesc('pesanan.created_at')
+        ->get();
+
+    return view('admin.pesanan.pesanan', compact('pesanan'));
     }
 
     /**
@@ -34,27 +49,27 @@ class PesananController extends Controller
     public function store(Request $request, string $id)
     {
         $kamar = Kamar::findOrFail($id);
-        dd($request);
-        //check ketersediaan kamar 
-        $checkbooking = Pesanan::where("checkin", ">=", $request->input("checkin"))
-        ->where("checkout", "<=", $request->input("checkin"))
-        ->where("checkin", ">=", $request->input("checkout"))
-        ->where("checkout", "<=", $request->input("checkout"))
-        ->get();
-
-        if($checkbooking){
+        
+        // Check ketersediaan kamar
+        $checkbooking = Pesanan::where('checkin', '>=', $request->input('checkin'))
+            ->where('checkout', '<=', $request->input('checkin'))
+            ->where('checkin', '>=', $request->input('checkout'))
+            ->where('checkout', '<=', $request->input('checkout'))
+            ->get();
+        
+        if ($checkbooking->isNotEmpty()) {
             return redirect()->back()->withErrors([
-                'konfliktanggal'=> 'Tanggal Tidak Tersedia'
+                'konfliktanggal' => 'Tanggal Tidak Tersedia'
             ]);
         }
         
-
-        //hitung total bayar
-        $checkin = Carbon::parse($request->input('checkin'));
-        $checkout = Carbon::parse($request->input('checkout'));
-        $malam = $checkout->diffInDays($checkin);
-        $totalharga = ($kamar->harga * $malam);
-
+        // Hitung total bayar
+        $checkin = strtotime($request->input('checkin'));
+        $checkout = strtotime($request->input('checkout'));
+        $malam = floor(($checkout - $checkin) / (60 * 60 * 24)); // Calculate the number of nights
+        $totalharga = $kamar->harga * $malam;
+        
+        
         $pesanan = Pesanan::create([
             'id_pelanggan' => Auth::user()->id,
             'id_kamar' => $id,
@@ -63,10 +78,42 @@ class PesananController extends Controller
             'jumlah' => $request->input('jumlah'),
             'total' => $totalharga,
         ]);
+        $kamar = Kamar::with('katagori')->findOrFail($id);
+        $admin=User::where('role','admin')->get();
 
-        return redirect('pesanan');
+        Mail::to($admin)->send(new EmailOrder(['pesanan'=>$pesanan, 'user'=>Auth::user(), 'kamar'=>$kamar]));
+        Queue::after(now()->addSeconds(1), new UpdateStatus);
+        
+
+        return redirect('/order');
     }
 
+    public function order()
+    {
+        if (Auth::check()) {
+            $pesanan = Pesanan::where('id_pelanggan', Auth::user()->id)->get();
+        }else{
+            return redirect('/login');
+        }
+
+        return view('user.order', ['pesanan' => $pesanan]);
+    }
+
+    public function uploadbukti(Request $request, string $id){
+        $bukti = Pesanan::findOrFail($id);
+        if ($request->hasFile('bukti')) {
+            $filename = $request->file('bukti')->getClientOriginalName();
+            $request->file('bukti')->move('bukti/', $filename);
+            $url = asset('bukti/' . $filename);
+            
+        }
+        $bukti->bukti = $url; 
+        $bukti->status_bayar = 'proses';
+
+        $bukti->save();
+
+        return redirect('order');
+    }
     /**
      * Display the specified resource.
      */
@@ -80,7 +127,16 @@ class PesananController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        $pesanan = DB::table('pesanan')
+            ->where('pesanan.id', $id)
+            ->join('kamar', 'pesanan.id_kamar', '=', 'kamar.id')
+            ->join('users', 'pesanan.id_pelanggan', '=', 'users.id')
+            ->join('katagori', 'kamar.katagori_id', '=', 'katagori.id')
+            ->select('pesanan.id as pesanan_id', 'kamar.*', 'users.*', 'katagori.*', 'pesanan.*')
+            ->first();
+
+        return view('admin.pesanan.editpesanan', ['pesanan' => $pesanan]);
     }
 
     /**
@@ -88,7 +144,80 @@ class PesananController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $pesanan = DB::table('pesanan')
+            ->where('pesanan.id', $id)
+            ->join('kamar', 'pesanan.id_kamar', '=', 'kamar.id')
+            ->join('users', 'pesanan.id_pelanggan', '=', 'users.id')
+            ->join('katagori', 'kamar.katagori_id', '=', 'katagori.id')
+            ->select('pesanan.id as pesanan_id', 'kamar.*', 'users.*', 'katagori.*', 'pesanan.*')
+            ->first();
+
+        $status_bayar = $request->input('status_bayar') == 'on' ? 'sudah' : 'belum';
+        $pesanan->status_bayar = $status_bayar;
+
+        // Save the changes to the database
+        DB::table('pesanan')->where('id', $pesanan->pesanan_id)->update(['status_bayar' => $status_bayar]);
+        Mail::to($pesanan->email)->send(new EmailCustomer(['pesanan'=>$pesanan]));
+
+        return redirect('pesanan');
+    }
+
+
+    //report
+    public function report(Request $request)
+    {
+        $pesanan = DB::table('pesanan')
+            ->join('kamar', 'pesanan.id_kamar', '=', 'kamar.id')
+            ->join('users', 'pesanan.id_pelanggan', '=', 'users.id')
+            ->join('katagori', 'kamar.katagori_id', '=', 'katagori.id')
+            ->select('pesanan.id as pesanan_id', 'kamar.*', 'users.*', 'katagori.*', 'pesanan.*')
+            ->orderByDesc('pesanan.created_at');
+
+        if ($request->query('start')) {
+            $pesanan->where('checkin', '>=', $request->query('start'));
+        }
+
+        if ($request->query('end')) {
+            $pesanan->where('checkin', '<=', $request->query('end'));
+        }
+
+        $pesanan = $pesanan->get();
+        
+        return view('admin.report.report', ['pesanan' => $pesanan]);
+    }
+
+
+
+    public function cetak_pdf(Request $request)
+    {
+        
+    	$query = DB::table('pesanan')
+            ->join('kamar', 'pesanan.id_kamar', '=', 'kamar.id')
+            ->join('users', 'pesanan.id_pelanggan', '=', 'users.id')
+            ->join('katagori', 'kamar.katagori_id', '=', 'katagori.id')
+            ->select('pesanan.id as pesanan_id', 'kamar.*', 'users.*', 'katagori.*', 'pesanan.*')
+            ->orderByDesc('pesanan.created_at')
+            ->where('pesanan.status_bayar', '=', 'sudah');
+
+        if (request()->query('start')) {
+            $query->where('checkin', '>=', request()->query('start'));
+        }
+
+        if (request()->query('end')) {
+            $query->where('checkin', '<=', request()->query('end'));
+        }
+
+        $pesanan = $query->get();
+
+        $totalharga = 0;
+        for ($i=0; $i < count($pesanan) ; $i++) { 
+            $totalharga+=$pesanan[$i]->harga; 
+        }
+
+        // dd($totalharga);
+
+    	$pdf = PDF::loadview('admin.pesanan.ReportPesanan_pdf',['pesanan'=>$pesanan, 'totalharga'=> $totalharga]);
+    	return $pdf->download('laporan-pesanan.pdf');
     }
 
     /**
@@ -96,6 +225,10 @@ class PesananController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $pesanan = Pesanan::findOrFail($id);
+        $pesanan->status_bayar='batal';
+        $pesanan->save();
+
+        return redirect("/order");
     }
 }

@@ -29,9 +29,6 @@
                                 <td>{{ $u->email }}</td>
                                 <td>{{ $u->role }}</td>
                                 <td> 
-                                    <a href="/updateakun/{{ $u->id }}" class="btn btn-warning">
-                                        <img src="img/icon/pencil.png" alt="">
-                                    </a>
                                     <a href="/deleteakun/{{ $u->id }}" class="btn btn-danger">
                                         <img src="img/icon/trash.png" alt="">
                                     </a>

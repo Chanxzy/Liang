@@ -5,23 +5,42 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KamarController;
 use App\Http\Controllers\KatagoriController;
 use App\Http\Controllers\PesananController;
-use App\Http\Controllers\TampilanController;
 use App\Http\Controllers\GambarController;
+
+use App\Models\Pesanan;
 
 
 //Tampilan User
-Route::get('/', [TampilanController::class, 'index']);
-Route::get('/amenities', [TampilanController::class, 'amenities']);
-Route::get('/booking', [TampilanController::class, 'booking']);
-Route::get('/gallery', [TampilanController::class, 'gallery']);
-Route::get('/contact', [TampilanController::class, 'contact']);
-Route::get('/detailkamar/{id}', [TampilanController::class, 'detailkamar']);
+Route::get('/', function(){
+    return view('user.index');
+});
+Route::get('/amenities', function(){
+    return view('user.amenities');
+});
+Route::get('/booking', function(){
+    return view('user.booking');
+});
+Route::get('/gallery', function(){
+    return view('user.gallery');
+});
+Route::get('/contact', function(){
+    return view('user.contact');
+});
+
+
+
+Route::get('/detailkamar/{id}', [KamarController::class, 'detailkamar']);
+
+//order
+Route::get('/order', [PesananController::class, 'order']);
 
 //dashboard
 Route::get('/kamar',[KamarController::class, 'index']);
 Route::get('/katagori',[KatagoriController::class, 'index']);
 Route::get('/user',[AuthController::class, 'user']);
 Route::get('/pesanan',[PesananController::class, 'index']);
+Route::get('/report',[PesananController::class, 'report'])->name('report');
+Route::post('/pesanan/cetak_pdf',[PesananController::class, 'cetak_pdf'])->name("cetak_pdf");
 Route::get('/gambar',[GambarController::class, 'index']);
 
 
@@ -29,6 +48,11 @@ Route::get('/gambar',[GambarController::class, 'index']);
 Route::get('/login', [AuthController::class, 'index'])->name("login");
 Route::get('/dashboard', [AuthController::class, 'dashboard'])->name("dashboard");
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/forgotpass', [AuthController::class, 'forgotpass'])->name('forgotpass');
+Route::post('/resetpassword/{token}', [AuthController::class, 'resetpassword'])->name('resetpassword');
+Route::get('/formforgotpass', [AuthController::class, 'formforgotpass'])->name('formforgotpass');
+Route::get('/formresetpassword/{token}', [AuthController::class, 'formresetpassword'])->name('formresetpassword');
 
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name("register");
 Route::post('/register', [AuthController::class, 'register']);
@@ -45,6 +69,7 @@ Route::get('/deletekamar/{id}', [KamarController::class, 'destroy'])->name("dele
 //CRUD AKUN
 Route::get('/tambahakun', [AuthController::class, 'create'])->name("tambahakun");
 Route::post('/tambahakun', [AuthController::class, 'store']);
+Route::post('/tambahadmin', [AuthController::class, 'create_admin'])->name("tambahadmin");
 
 Route::get('/updateakun/{id}', [AuthController::class, 'edit'])->name("updateakun.edit");
 Route::post('/updateakun/{id}', [AuthController::class, 'update'])->name("updateakun.update");
@@ -63,11 +88,12 @@ Route::get('/deletekatagori/{id}', [KatagoriController::class, 'destroy'])->name
 //CRUD Pesanan
 // Route::get('/tambahpesanan/{id}', [PesananController::class, 'create'])->name("tambahpesanan");
 Route::post('/tambahpesanan/{id}', [PesananController::class, 'store'])->name("tambahpesanan.store");
+Route::post('/uploadbukti/{id}', [PesananController::class, 'uploadbukti'])->name("uploadbukti.uploadbukti");
 
 Route::get('/updatepesanan/{id}', [PesananController::class, 'edit'])->name("updatepesanan.edit");
 Route::post('/updatepesanan/{id}', [PesananController::class, 'update'])->name("updatepesanan.update");
 
-Route::get('/deletepesanan/{id}', [PesananController::class, 'destroy'])->name("deleteakun.destroy");
+Route::post('/deletepesanan/{id}', [PesananController::class, 'destroy'])->name("deletepesanan.destroy");
 
 //CRUD Gambar
 Route::get('/tambahgambar', [GambarController::class, 'create'])->name("tambahgambar");

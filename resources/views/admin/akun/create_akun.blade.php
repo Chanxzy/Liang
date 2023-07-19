@@ -19,7 +19,7 @@
                     <br/>
                     <br/>
                     
-                    <form method="post" action="{{ route("tambahakun") }}" enctype="multipart/form-data">
+                    <form method="post" action="{{ route("tambahadmin") }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group">
@@ -50,6 +50,17 @@
                                     {{ $errors->first('email')}}
                                 </div>
                             @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="role" id="admin" value="admin">
+                                <label class="form-check-label" for="admin">Admin</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="role" id="user" value="user">
+                                <label class="form-check-label" for="user">User</label>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Password</label>

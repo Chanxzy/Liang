@@ -1,7 +1,39 @@
-menu order setelah login. dalam order ada menu pembayaran, upload bukti, dan pembatalan. 
-hbis pesan ke redirect ke order.
-status bayar ganti dengan status.
-order
-kode otp email
-notip
-laporan
+menu order setelah login. dalam order ada menu pembayaran, upload bukti.
+hbis pesan ke redirect ke order. (sudah)
+order (sudah)
+notip (sudah)
+create akun admin (sudah)
+tambahkan pemberitahuan jika pembayaran tidak sesuai (email pribadi)
+tambahkan peringatan pada form pesanan bahwa pesanan tidak bisa di batalkan jika dipesan (tidak perlu)
+waktu expired order tampilin di order (sudah)
+log out (sudah)
+laporan !important (sudah)
+
+
+kode otp email (done)
+kopas nominal diperbaiki
+beberapa navbar tidak mau jalan di beberapa menu
+membuat modal detail pesanan pada menu detail kamar.
+timer user
+tambahkan pemberitahuan untuk cek imail setelah bayar
+pesan eror tiap form {belom fix}
+full cek ulang buat fix
+ganti semua bahasa ke inggris
+
+//template keterangan
+● Kokokan Room
+● Kutilang Room
+● Murai Room
+● Pool
+● Lounge
+● Kitchen
+● Bathroom
+
+Dalam kamar isinya sama 
+Bed bisa setup queen atau single
+● AC
+● Ceiling Fan
+● Safety box
+● Mini fridge 
+● cupboard 
+● Workbench

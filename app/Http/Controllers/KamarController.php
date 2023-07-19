@@ -90,4 +90,10 @@ class KamarController extends Controller
 
         return redirect('kamar');
     }
+
+    public function detailkamar($id){
+
+        $kamar = Kamar::with('katagori','gambar')->where('id', $id)->get();
+        return view('user.room.detailroom', ['kamar' => $kamar]);
+    }
 }

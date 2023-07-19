@@ -19,16 +19,10 @@
         </div>
     </div>
 
-    <div class="container">
-        <h1 class="text-center m-5">
-            <span class="banner1 font-bold">VILLA LIANG</span>
-        </h1>    
-    </div>
-
-    <div class="container">
+    <div class="container" >
         <div class="row">
             <div class="col-sm-4 mb-3 mt-3">
-                <div class="card " style="background-color: #D9D9D9;">
+                <div class="card " style="background-color: #D9D9D9;"data-aos="fade-right">
                     <div class="card-body">
                     <h5 class="card-title about" style="font-weight: bold;">Bedroom</h5>
                     <ul class="entry-content" style="list-style-type: disc;">
@@ -43,7 +37,7 @@
             </div>
         </div>
 
-        <div class="col-sm-4 mt-3">
+        <div class="col-sm-4 mt-3" data-aos="fade-up">
             <div class="card" style="background-color: #D9D9D9;">
                 <div class="card-body">
                     <h5 class="card-title about" style="font-weight: bold;">Living card</h5>
@@ -60,7 +54,7 @@
             </div>
         </div>
     </br>
-        <div class="col-sm-4 col-md-4 mt-3">
+        <div class="col-sm-4 col-md-4 mt-3" data-aos="fade-left">
             <div class="card" style="background-color: #D9D9D9;">
                 <div class="card-body">
                     <h5 class="card-title about">Modern Conveniences</h5>
@@ -82,6 +76,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 

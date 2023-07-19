@@ -11,7 +11,33 @@
 
 
 <!-- AOS -->
-{{-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" /> --}}
+<script>
+AOS.init({
+    // Global settings:
+    disable: false,
+    startEvent: 'DOMContentLoaded',
+    initClassName: 'aos-init', 
+    animatedClassName: 'aos-animate', 
+    useClassNames: false, 
+    disableMutationObserver: false, 
+    debounceDelay: 50, 
+    throttleDelay: 99, 
+    
+
+    // Settings that can be overridden on per-element basis, by `data-aos-*` attributes:
+    offset: 120, 
+    delay: 0, 
+    duration: 1000, 
+    easing: 'ease', 
+    once: false, 
+    mirror: false, 
+    anchorPlacement: 'top-bottom',
+
+});
+</script>
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
 
 <!-- My CSS -->
 

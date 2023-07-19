@@ -29,7 +29,12 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Pesanan</span></a>
     </li>  
-    
+    <li class="nav-item">
+        <a class="nav-link" href="/report">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Report</span></a>
+    </li>  
+
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
@@ -38,9 +43,9 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="/kamar">Data Kamar</a>
                 <a class="collapse-item" href="/katagori">Data Katagori</a>
                 <a class="collapse-item" href="/gambar">Data Gambar</a>
+                <a class="collapse-item" href="/kamar">Data Kamar</a>
             </div>
         </div>
     </li>

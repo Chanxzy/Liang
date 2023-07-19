@@ -4,7 +4,7 @@
 <script src="https://kit.fontawesome.com/0d8d91a5d4.js" crossorigin="anonymous"></script>
 
 <footer>
-    <section class="">
+    <section class="" data-aos="fade-down">
         <div class="row mt-5 container-fluid" style="background-color: #D9D9D9; background-size: cover; background-position: center;">
             <div class="col-lg col-sm col-6" >
                 <a href="#">

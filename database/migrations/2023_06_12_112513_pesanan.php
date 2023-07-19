@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('jumlah');
             $table->date('checkin');
             $table->date('checkout');
-            $table->enum('status_bayar', ['belum', 'sudah'])->default('belum');
+            $table->enum('status_bayar', ['belum', 'sudah', 'batal','proses'])->default('belum');
             $table->string('bukti')->nullable();
             $table->integer('total');
             $table->timestamps();

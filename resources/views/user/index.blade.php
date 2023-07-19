@@ -13,19 +13,21 @@
     @include('partial.navbar')
 
     <!-- Banner Image -->
-    <div class="banner-image d-flex justify-content-center align-items-center">
-        <div class="content text-center">
-            <h1 data-aos="fade-up" class="banner text-white">
-                <span class="banner1">Welcome</span> <br />
-                <span>to</span> </br> <span class="banner2">VILLA LIANG</span>
-            </h1>
+        <div class="c-item" data-aos="fade-down">
+            <div class="banner-image c-img d-flex justify-content-center align-items-center">
+                <div class="content text-center"  >
+                    <h1  class="banner text-white">
+                        <span class="banner1">Welcome</span> <br />
+                        <span>to</span> </br> <span class="banner2">VILLA LIANG</span>
+                    </h1>
+                </div>
+            </div>
         </div>
-    </div>
     </br>
     <!--End Banner Image-->
 
     <!--About-->
-    <div class="container">
+    <div class="container" data-aos="fade-up">
         <h1 class="text-center">
             <span class="about">About</span> </br>
             <span class="banner1 font-bold">VILLA LIANG</span> </br>
@@ -40,21 +42,94 @@
             <p>The word ‘liang’ in the Balinese language means ‘happy’. We want our villa to make you feel happy, comfortable and rested and for your time with us to be a memorable one.</p>
         </h1>
     </div>
-</br>
     <!-- End About -->
 
+    <div class="container" data-aos="fade-up">
+        <h1 class="text-center m-5">
+            <ul class="banner1 font-bold no-underline">
+                <p href="/amenities">AMENITIES</p>
+            </ul>
+        </h1>    
+    </div>
+
+    <div class="container" >
+        <div class="row">
+            <div class="col-sm-4 mb-3 mt-3">
+                <div class="card " style="background-color: #D9D9D9;"data-aos="fade-right">
+                    <div class="card-body">
+                    <h5 class="card-title about" style="font-weight: bold;">Bedroom</h5>
+                    <ul class="entry-content" style="list-style-type: disc;">
+                        <li class="text m-3">Sleeps 6</li>
+                        <li class="text m-3">3 x bedrooms, each able to be configured as super-king-sized doubles or singles</li>
+                        <li class="text m-3">Each bedroom has a large ensuite</li>
+                        <li class="text m-3">High quality linen</li>
+                        <li class="text m-3">Fridge, tea and coffee making facilities in each room</li>
+                        <li class="text m-3">Daily housekeeping</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 mt-3" data-aos="fade-up">
+            <div class="card" style="background-color: #D9D9D9;">
+                <div class="card-body">
+                    <h5 class="card-title about" style="font-weight: bold;">Living card</h5>
+                    <ul class="entry-content" style="list-style-type: disc;">
+                        <li class="text m-3">WIFI internet</li>
+                        <li class="text m-3">Daily housekeeping services</li>
+                        <li class="text m-3">Airport transfers can be arranged</li>
+                        <li class="text m-3">Private pool</li>
+                        <li class="text m-3">Self- contained kitchen</li>
+                        <li class="text m-3">Full size fridge with ice make</li>
+                        <li class="text m-3">Air conditioning and fans in all bedrooms</li>
+                    </ul>
+            </div>
+            </div>
+        </div>
+    </br>
+        <div class="col-sm-4 col-md-4 mt-3" data-aos="fade-left">
+            <div class="card" style="background-color: #D9D9D9;">
+                <div class="card-body">
+                    <h5 class="card-title about">Modern Conveniences</h5>
+                    <ul class="entry-content" style="list-style-type: disc;">
+                        <li class="text m-3">Large open plan living area</li>
+                        <li class="text m-3">8 seater dining setting</li>
+                    </ul>
+                </div>
+            </div>
+        </br>
+            <div class="card pt" style="background-color: #D9D9D9;">
+                <div class="card-body">
+                    <h5 class="card-title about">Check-in Times</h5>
+                    <ul class="entry-content" style="list-style-type: disc;">
+                        <li class="text m-3">Check-in time 2:00 PM</li>
+                        <li class="text m-3">Check-out time 11:30 AM</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</br>
     <!-- Foto -->
-    <section class="container sproduct justify-content-center my-3">
+    <div class="container" data-aos="fade-up">
+        <h1 class="text-center m-5">
+            <ul class="banner1 font-bold no-underline">
+                <p>GALLERY</p>
+            </ul>
+        </h1>    
+    </div>
+    <section class="container sproduct justify-content-center my-3" data-aos="fade-up">
         <div class="row mt-3"> 
-            <div class="col-lg-5 col-xl-12 col-12">
-                <img class="img-fluid w-100 pb-1" style="height: 50vh" src="img/foto/dining/AR307482_1600_1067.jpg" id="MainImg" alt="">
+            <div class="col-lg-5 col-xl-12 col-12 c-item">
+                <img class="img-fluid w-100 pb-1 c-img" style="height: 75vh" src="img/foto/dining/AR307482_1600_1067.jpg" id="MainImg" alt="">
     
                 <div class="small-img-group pt-1">
                     <div class="small-img-col pe-1">
-                        <img src="img/foto/pool/Villa-Liang-Ubud-15.jpg" width="100%" class="small-img" alt="">
+                        <img src="img/foto/pool/pool1.jpg" width="100%" class="small-img" alt="">
                     </div>
                     <div class="small-img-col px-1">
-                        <img src="img/foto/lounge/Villa-Liang-Ubud-6.jpg" width="100%" class="small-img" alt="">
+                        <img src="img/foto/lounge/Villa Liang Ubud - 31.jpg" width="100%" class="small-img" alt="">
                     </div>
                     <div class="small-img-col px-1">
                         <img src="img/foto/kitchen/Villa-Liang-Ubud-32.jpg" width="100%" class="small-img" alt="">
@@ -73,9 +148,12 @@
                     </div>
                 </div>
             </div>
-
+             
     </section>
-    
+</br>
+</br>
+</br>
+    @yield('konten')
 
     <script>
         var MainImg = document.getElementById('MainImg');
