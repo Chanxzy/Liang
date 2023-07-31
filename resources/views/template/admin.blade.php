@@ -22,9 +22,9 @@
             <!-- Main Content -->
             <div id="content">
 
-                <!-- Topbar -->
+                {{-- <!-- Topbar -->
                 @include('template.navbar')
-                <!-- End of Topbar -->
+                <!-- End of Topbar --> --}}
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">

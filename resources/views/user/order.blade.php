@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Villa Liang</title>
 
+  @include('partial.style')
   <script>
     AOS.init({
         // Global settings:
@@ -106,6 +107,7 @@
 <body>
 
   @include('partial.navbar')
+
   <div class="container">
     <h1 class="text-center mt-5" data-aos="zoom-in">
       <span class="banner1 about">Order</span>
@@ -115,8 +117,8 @@
 
 </br>
   <div class="d-flex flex-wrap " style="height: auto; justify-content: center;"  data-aos="fade-up">
-  
-  @foreach ($pesanan as $index => $p)
+
+  @foreach ($orderbaru as $index => $p)
     <!-- Display item data -->
     <div class="card" style="margin-bottom: 20px;">
         <div class="card-inner">
@@ -153,14 +155,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="mt-3 mb-3" for="jumlah">Jumlah Pengunjung</label>
+                            <label class="mt-3 mb-3" for="jumlah">Visitors</label>
                             <div class="border rounded p-2">
-                                <p class="m-0">{{ $p->jumlah }} orang</p>
+                                <p class="m-0">{{ $p->jumlah }} person</p>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="mt-3 mb-3">Total Bayar</label>
+                            <label class="mt-3 mb-3">Pay Amount</label>
                             <div class="border rounded p-2">
+                              
                                 <p class="m-0">Rp {{ $p->total }}</p>
                             </div>
                         </div>
@@ -171,7 +174,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <button type="button" class="btn btn-success btn-block" data-toggle="modal"
-                                            data-target="#orderBerhasilModal">Order Berhasil</button>
+                                            data-target="#orderBerhasilModal">Order Success</button>
                                     </div>
                                 </div>
                             @elseif ($p->status_bayar == 'batal')
@@ -179,7 +182,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <button type="button" class="btn btn-danger btn-block" data-toggle="modal"
-                                            data-target="#orderBatalModal">Order Batal</button>
+                                            data-target="#orderBatalModal">Order Canceled</button>
                                     </div>
                                 </div>
                             @elseif ($p->status_bayar == 'proses')
@@ -187,7 +190,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
-                                            data-target="#orderProsesModal">On Proses</button>
+                                            data-target="#orderProsesModal">On Process</button>
                                     </div>
                                 </div>
                             @else
@@ -195,7 +198,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
-                                            data-target="#bayarModal">Bayar</button>
+                                            data-target="#bayarModal">Pay</button>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -207,7 +210,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <button type="button" class="btn btn-danger btn-block" data-toggle="modal"
-                                            data-target="#batalModal">Batal</button>
+                                            data-target="#batalModal{{ $p->id }}">Cancel</button>
                                     </div>
                                 </div>
                             @endif
@@ -226,7 +229,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel">Modal Title - Upload</h5>
+                    <h5 class="modal-title" id="uploadModalLabel">Upload Evidence</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -250,41 +253,210 @@
         </div>
     </div>
 
-  <!-- Modal for Batal -->
-  <form action="{{ route("deletepesanan.destroy", $p->id) }}" method="post">
-    @csrf
-    <div class="modal fade" id="batalModal" tabindex="-1" role="dialog" aria-labelledby="batalModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="batalModalLabel">Konfirmasi Pembatalan</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Apakah Anda yakin ingin membatalkan order ini?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-          <button type="submit" class="btn btn-primary">Iya</button>
+    <!-- Modal for Batal -->
+    <form action="{{ route("deletepesanan.destroy", $p->id) }}" method="post">
+      @csrf
+      <div class="modal fade" id="batalModal{{ $p->id }}" tabindex="-1" role="dialog" aria-labelledby="batalModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="batalModalLabel{{ $p->id }}">Confirmation Order Cancel</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to cancel this order?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="submit" class="btn btn-primary">Yes</button>
+          </div>
         </div>
       </div>
+    </form>
     </div>
-  </form>
-  </div>
-@endforeach
-    
+  @endforeach
   </div>
 
+  <div class="container">
+    <h1 class="text-center mt-5" data-aos="zoom-in">
+      <span class="banner1 about">Order History</span>
+    </h1>
+  </div>
+  <hr data-aos="zoom-in">
+  </br>
+  <div class="d-flex flex-wrap " style="height: auto; justify-content: center;"  data-aos="fade-up">
+
+  @foreach ($orderlama as $index => $p)
+    <!-- Display item data -->
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-inner">
+            <div class="card-front">
+                <h5>Order {{ $index + 1  }}</h5>
+                <a href="#" class="btn btn-success btn-detail">Detail</a>
+            </div>
+            <div class="card-back">
+                <div class="card-title">
+                    <div class="mt-2 text text-dark text-bold">
+                        <label>Order</label>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="text">
+                        <div class="border rounded p-3">
+                            <!-- Form fields -->
+                            <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="checkin">Check-in</label>
+                                    <div class="border rounded p-2">
+                                        <p class="m-0">{{ $p->checkin }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="checkout">Check-out</label>
+                                    <div class="border rounded p-2">
+                                        <p class="m-0">{{ $p->checkout }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="mt-3 mb-3" for="jumlah">Visitors</label>
+                            <div class="border rounded p-2">
+                                <p class="m-0">{{ $p->jumlah }} person</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="mt-3 mb-3">Pay Amount</label>
+                            <div class="border rounded p-2">
+                              
+                                <p class="m-0">Rp {{ $p->total }}</p>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row mt-3 justify-content-center">
+                            @if ($p->status_bayar == 'sudah')
+                                <!-- Jika status adalah 'sudah', tampilkan tombol "Order Berhasil" -->
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-success btn-block" data-toggle="modal"
+                                            data-target="#orderBerhasilModal">Order Success</button>
+                                    </div>
+                                </div>
+                            @elseif ($p->status_bayar == 'batal')
+                                <!-- Jika status adalah 'sudah', tampilkan tombol "Order Berhasil" -->
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-danger btn-block" data-toggle="modal"
+                                            data-target="#orderBatalModal">Order Canceled</button>
+                                    </div>
+                                </div>
+                            @elseif ($p->status_bayar == 'proses')
+                                <!-- Jika status adalah 'sudah', tampilkan tombol "Order Berhasil" -->
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
+                                            data-target="#orderProsesModal">On Process</button>
+                                    </div>
+                                </div>
+                            @else
+                                <!-- Jika status bukan 'sudah', tampilkan tombol "Bayar", "Upload", dan "Batal" -->
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
+                                            data-target="#bayarModal">Pay</button>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
+                                            data-target="#uploadModal{{ $p->id }}">Upload</button>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-danger btn-block" data-toggle="modal"
+                                            data-target="#batalModal{{ $p->id }}">Cancel</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                      </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <!-- Modal -->
+    <div class="modal fade" id="uploadModal{{ $p->id }}" tabindex="-1" role="dialog"
+        aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Upload Evidence</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Modal content for Upload -->
+                    <form method="post" action="{{ route('uploadbukti.uploadbukti', $p->id) }}"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="bukti">Select File:</label>
+                            <input type="file" class="form-control-file" name="bukti" id="bukti">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Batal -->
+    <form action="{{ route("deletepesanan.destroy", $p->id) }}" method="post">
+      @csrf
+      <div class="modal fade" id="batalModal{{ $p->id }}" tabindex="-1" role="dialog" aria-labelledby="batalModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="batalModalLabel{{ $p->id }}">Confirmation Order Cancel</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to cancel this order?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="submit" class="btn btn-primary">Yes</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    </div>
+  @endforeach
+  </div>
   <!-- Modal for Bayar -->
 <div class="modal fade" id="bayarModal" tabindex="-1" role="dialog" aria-labelledby="bayarModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="bayarModalLabel">Modal Title - Bayar</h5>
+        <h5 class="modal-title" id="bayarModalLabel">Pay</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -310,7 +482,7 @@
   </div>
 </div>
 
- 
+
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

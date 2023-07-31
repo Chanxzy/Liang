@@ -1,9 +1,28 @@
 @extends('template.admin')
 @section('konten')
+<style>
+.btn:active,
+.btn:focus,
+.btn:active:focus {
+    box-shadow: none !important;
+}
+.btn-action{
+    border-radius: 50px;
+    font-size: 12px;
+    background-color: #f5f5f5;
+    border: none;
+}
+.viewedit{
+    color: orange;
+}
+.viewdelete{
+    color: red;
+}
+</style>
         <div class="container">
             <div class="card mt-5">
                 <div class="card-header text-center">
-                    Katagori
+                    <h3>Katagori</h3>
                 </div>
                 
                 <div class="card-body">
@@ -15,6 +34,7 @@
                         <thead>
                             <tr>
                                 <th>Nama Kamar</th>
+                                <th>Action</th>
                         </thead>
                         
                         <tbody>
@@ -22,11 +42,11 @@
                             <tr>
                                 <td>{{ $ka->nama_katagori }}</td>
                                 <td> 
-                                    <a href="/updatekatagori/{{ $ka->id }}" class="btn btn-warning">
-                                        <img src="img/icon/pencil.png" alt="">
+                                    <a href="/updatekatagori/{{ $ka->id }}" class="btn btn-action viewedit btn-warning me-2 mr-1">
+                                        <i class="fa-solid fa-pencil"></i>
                                     </a>
-                                    <a href="/deletekatagori/{{ $ka->id }}" class="btn btn-danger">
-                                        <img src="img/icon/trash.png" alt="">
+                                    <a href="/deletekatagori/{{ $ka->id }}" class="btn btn-action viewdelete btn-danger me-2 mr-1">
+                                        <i class="fa-solid fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>

@@ -28,12 +28,12 @@ font-weight: bold;
         <div class="container">
             <div class="card mt-5">
                 <div class="card-header text-center">
-                Pesanan Villa Liang
+                <h3>Pesanan Villa Liang</h3>
                 </div>
                 
                 <div class="card-body">
                     <a href="/tambahpesanan" class="btn btn-primary">Create Pesanan</a>
-                    <a href="/pesanan/cetak_pdf" class="btn btn-success">Print PDF</a>
+                    
                     <br/>
                     <br/>
                     

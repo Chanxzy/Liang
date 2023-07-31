@@ -11,11 +11,21 @@
 			font-size: 9pt;
 		}
 	</style>
-	<center>
-		<h5>Laporan Pesanan Villa Liang Ubud</h4>
-		
-	</center>
 
+	<div class="container">
+		<div class="row">
+		<div class="col-md-12">
+			<div class="text-center">
+			<h3>Villa Liang Ubud</h3>
+			<p style="font-size: 12px">Jl. Tirta Tawar, Petulu, Kutuh Kaja, Ubud, Bali</p>
+			<p style="font-size: 12px">Tel: (+62) 2081936172951 | Email: villaliangubud@gmail.com</p>
+			</div>
+		</div>
+	</div>
+
+	<h3 class="text-center">Laporan Pesanan</h3>
+	</br>
+	
 	<table class='table table-bordered'>
 		<thead>
 			<tr>
@@ -24,9 +34,9 @@
 				<th>Jumlah Tamu</th>
 				<th>Check In</th>
 				<th>Check Out</th>
-				<th>Total</th>
 				<th>Status</th>
 				<th>Kamar</th>
+				<th>Total</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -38,9 +48,9 @@
 				<td>{{$p->jumlah}}</td>
 				<td>{{$p->checkin}}</td>
 				<td>{{$p->checkout}}</td>
-				<td>Rp{{ number_format($p->total, 0, ',', '.') }}</td>
                 <td>{{ $p->status_bayar }}</td>
                 <td>{{ $p->nama_katagori }}</td>
+				<td>Rp{{ number_format($p->total, 0, ',', '.') }}</td>
 			</tr>
 			@endforeach
                     <tr>
@@ -49,6 +59,6 @@
         </tr>
 		</tbody>
 	</table>
- 
+
 </body>
 </html>

@@ -30,7 +30,7 @@ class PesananController extends Controller
         ->select('pesanan.id as pesanan_id', 'kamar.*', 'users.*', 'katagori.*', 'pesanan.*')
         ->orderByDesc('pesanan.created_at')
         ->get();
-
+        
     return view('admin.pesanan.pesanan', compact('pesanan'));
     }
 
@@ -51,17 +51,17 @@ class PesananController extends Controller
         $kamar = Kamar::findOrFail($id);
         
         // Check ketersediaan kamar
-        $checkbooking = Pesanan::where('checkin', '>=', $request->input('checkin'))
-            ->where('checkout', '<=', $request->input('checkin'))
-            ->where('checkin', '>=', $request->input('checkout'))
-            ->where('checkout', '<=', $request->input('checkout'))
-            ->get();
-        
+        $checkbooking = Pesanan::where(function ($query) use ($request) {
+            $query->where('checkin', '<=', $request->input('checkout'))
+                ->where('checkout', '>=', $request->input('checkin'));
+            })->get();
+
         if ($checkbooking->isNotEmpty()) {
             return redirect()->back()->withErrors([
-                'konfliktanggal' => 'Tanggal Tidak Tersedia'
+                'konfliktanggal' => 'Date not Available'
             ]);
         }
+
         
         // Hitung total bayar
         $checkin = strtotime($request->input('checkin'));
@@ -78,6 +78,7 @@ class PesananController extends Controller
             'jumlah' => $request->input('jumlah'),
             'total' => $totalharga,
         ]);
+        
         $kamar = Kamar::with('katagori')->findOrFail($id);
         $admin=User::where('role','admin')->get();
 
@@ -91,12 +92,14 @@ class PesananController extends Controller
     public function order()
     {
         if (Auth::check()) {
-            $pesanan = Pesanan::where('id_pelanggan', Auth::user()->id)->get();
+            $orderbaru = Pesanan::where('id_pelanggan', Auth::user()->id)->whereIn('status_bayar',['belum', 'proses'])->get();
+            $orderlama = Pesanan::where('id_pelanggan', Auth::user()->id)->whereIn('status_bayar',['batal', 'sudah'])->get();
         }else{
+            
             return redirect('/login');
         }
-
-        return view('user.order', ['pesanan' => $pesanan]);
+        
+        return view('user.order', ['orderbaru' => $orderbaru, 'orderlama' => $orderlama]);
     }
 
     public function uploadbukti(Request $request, string $id){
@@ -181,7 +184,11 @@ class PesananController extends Controller
             $pesanan->where('checkin', '<=', $request->query('end'));
         }
 
-        $pesanan = $pesanan->get();
+        if ($request->query('status')) {
+            $pesanan->where('status_bayar', '=', $request->query('status'));
+        }
+
+        $pesanan = $pesanan->paginate(5);
         
         return view('admin.report.report', ['pesanan' => $pesanan]);
     }
@@ -209,12 +216,12 @@ class PesananController extends Controller
 
         $pesanan = $query->get();
 
+        //hitung total harga laporan
         $totalharga = 0;
         for ($i=0; $i < count($pesanan) ; $i++) { 
-            $totalharga+=$pesanan[$i]->harga; 
+            $totalharga+=$pesanan[$i]->total; 
+            
         }
-
-        // dd($totalharga);
 
     	$pdf = PDF::loadview('admin.pesanan.ReportPesanan_pdf',['pesanan'=>$pesanan, 'totalharga'=> $totalharga]);
     	return $pdf->download('laporan-pesanan.pdf');

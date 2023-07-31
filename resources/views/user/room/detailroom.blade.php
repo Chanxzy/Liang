@@ -54,7 +54,7 @@
                             <div class="card-body">
                                 <h6 class="text" style="font-weight: bold;">Category</h6>
                                     <div class="entry-content" ">
-                                        <label class="text ms-1">{{ $k->katagori->nama_katagori }}</label>
+                                        <label class="text ms-1">{{ $k->katagori->nama_katagori }} Bedroom</label>
                                     </div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                             <div class="card-body">
                                 <h6 class="text" style="font-weight: bold;">Capasition</h6>
                                 <div class="entry-content" ">
-                                    <label class="text ms-1">{{ $k->kapasitas }}</label>
+                                    <label class="text ms-1">{{ $k->kapasitas }} persons</label>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                     <div class="col-md-12 mt-4">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title text" style="font-weight: bold;">Bedroom</h5>
+                                <h5 class="card-title text" style="font-weight: bold;">Content</h5>
                                 <div class="entry-content" ">
                                     <pre class="text m-3">{{ $k->keterangan }}</pre>
                                 </div>
@@ -89,7 +89,7 @@
                         <form class="text " method="post" action="{{ route("tambahpesanan.store", ['id'=>$k->id]) }}">
                             @csrf
                             <div class="form-group mb-2">
-                                <div id="harga">{{ $k->harga }}/malam</div>
+                                <div id="harga">{{ $k->harga }}/night</div>
                             </div>
                             <div class="border rounded">
                                 <div class="m-3">
@@ -108,15 +108,21 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="mt-3 mb-3" for="jumlah">Jumlah Pengunjung</label>
-                                        <input type="number" id="jumlah" name="jumlah" class="form-control" placeholder="Masukkan jumlah pengunjung">
+                                        <label class="mt-3 mb-3" for="jumlah">Visitors</label>
+                                        <input type="number" id="jumlah" name="jumlah" class="form-control" placeholder="Enter the number of visitors">
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-3" id="totalharga" >
-                                
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-3">Pesan</button>
+                            @if ($errors->any())
+                                <div>
+                                    @foreach ($errors->all() as $er)
+                                        <p class="text-danger">{{ $er }}</p>
+                                    @endforeach
+                                </div>
+                            @endif
+                            <div class="mt-3" id="totalharga"></div>
+                            <button type="submit" class="btn btn-primary mt-3">Order</button>
+                            
                         </form>
                     </div>
                 </div>
@@ -138,8 +144,9 @@
         @include('partial.footer')
     </footer>
     
-    {{-- skrip nampilin total harga --}}
+    
     <script>
+        // skrip nampilin total harga
         let totalharga = document.getElementById("totalharga");
         let checkin = document.getElementById("checkin");
         let checkout = document.getElementById("checkout");
@@ -164,6 +171,13 @@
                 totalharga.textContent = `Rp ${permalam * totalmalam}`;
                 
             }
+        }
+
+        //scrip disable tanggal
+        const inputCheckin=document.getElementById('checkin')
+        const inputCheckout=document.getElementById('checkout')
+        inputCheckin.onchange=()=>{
+            inputCheckout.min=inputCheckin.value
         }
     </script>
     

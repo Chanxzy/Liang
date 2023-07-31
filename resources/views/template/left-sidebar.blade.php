@@ -49,20 +49,16 @@
             </div>
         </div>
     </li>
-<li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pesanan"
-            aria-expanded="true" aria-controls="pesanan">
-            <i class="fas fa-fw fa-shopping-cart"></i>
-            <span>Data Akun</span>
-        </a>
-        <div id="pesanan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="login.html">Login</a>
-                <a class="collapse-item" href="/user">Register</a>
-                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            </div>
-        </div>
-    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/user">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Data Akun</span></a>
+    </li> 
+    <li class="nav-item">
+        <a class="nav-link" href="/logout">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Log Out</span></a>
+    </li> 
 
 
     <!-- Divider -->

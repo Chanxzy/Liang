@@ -22,7 +22,7 @@
         
                         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Send Email</p>
         
-                        <form class="mx-1 mx-md-4" method="POST" action="{{ route('forgotpass') }}" >
+                        <form onsubmit="alert('Check your Email')" class="mx-1 mx-md-4" method="POST" action="{{ route('forgotpass') }}" >
                             @csrf
     
                             <div class="d-flex flex-row align-items-center mb-4">

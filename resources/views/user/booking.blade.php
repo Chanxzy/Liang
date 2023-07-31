@@ -41,7 +41,7 @@
     </div>
 </br>
     <div class="container">
-        <div class="row">
+        <div class="row ">
             <div class="col-md-8" data-aos="fade-right">
                 <h2 class="about responsive-text">MURAI BEDROOM</h2>
                 <p>This is a slightly smaller bedroom than Kokokan and is named after the beautiful magpie pictured above. The room features a deluxe ensuite, air-con and a ceiling fan. The room is similarly furnished with solid, handmade teak furniture, a premium quality mattress, luxurious bed linen and features a day bed, a spacious wardrobe and a writing desk.</p>

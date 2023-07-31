@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Models\Pesanan;
 use App\Mail\forgotpass;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -17,15 +18,32 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
+
+    //dashboard admin
     public function dashboard(Request $request)
     {
-        return view('admin.dashboard');
+        //diagram
+        $tahun=date('Y');
+        $pesanan=Pesanan::select(DB::raw('MONTH(checkin) as month'),DB::raw('COUNT(*) as pesanan'),DB::raw('YEAR(checkin) as year'))
+        ->where('status_bayar','sudah')
+        ->whereYear('checkin',$tahun)
+        ->groupBy('month','year')
+        ->get();
+
+        //totaluser
+        $user=User::count();
+        $statusberhasil=Pesanan::where('status_bayar','sudah')->count();
+        $statusbelum=Pesanan::where('status_bayar','belum')->count();
+        $statusbatal=Pesanan::where('status_bayar','batal')->count();
+        return view('admin.dashboard', ['pesanan'=>$pesanan, 
+        'user'=>$user, 'statusberhasil'=>$statusberhasil, 
+        'statusbelum'=>$statusbelum, 'statusbatal'=>$statusbatal]);
     }
     
+    //mengatur login
     public function login(Request $request)
-{
+    {
     $credentials = $request->only('username', 'password');
-
     if (Auth::attempt($credentials)) {
         $user = Auth::user();
         session()->flash('success', 'Login successful');
@@ -36,11 +54,11 @@ class AuthController extends Controller
     }
 
     return redirect()->back()->withErrors([
-        'error' => 'Invalid credentials.',
+        'error' => 'Wrong Username or Password.',
     ]);
 }
 
-    
+    //register
     public function showRegistrationForm()
     {
         return view('auth.register');
@@ -56,12 +74,12 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
-
         session()->flash('success', 'Registration successful');
-
         return redirect()->intended('login');
     }
 
+
+    //tambah admin
     public function create_admin(Request $request){
 
         $role = User::create([
@@ -72,13 +90,12 @@ class AuthController extends Controller
             'password' => bcrypt($request->input('password')),
         ]);
 
-        return redirect('registakun');
+        return redirect('user');
     }
 
     /**
      * CRUD
      */
-
     public function user()
     {
         $user = User::all();
@@ -142,6 +159,7 @@ class AuthController extends Controller
         return redirect('user');
     }
 
+    //lupa password
     public function forgotpass(Request $request){
         $user = User::where('email',$request->input('email'))->first();
 
@@ -149,13 +167,15 @@ class AuthController extends Controller
         DB::table('password_reset_tokens')->insert(['email'=>$user->email, 'token'=>$token]);
         Mail::to($user->email)->send(new forgotpass(['token'=>$token]));
         
-        return redirect('/formforgotpass');
+        return redirect('/login');
     }
 
+    //formforgotpass berisikan measukan emai;
     public function formforgotpass(){
         return view('auth.forgotpass');
     }
 
+    //form reset password
     public function formresetpassword($token){
         return view('auth.formresetpassword', ['token'=>$token]);
     }
@@ -177,6 +197,7 @@ class AuthController extends Controller
     }
     
 
+    //logout
     public function logout()
     {
         Auth::logout();

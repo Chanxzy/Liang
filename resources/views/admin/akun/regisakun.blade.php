@@ -1,9 +1,26 @@
 @extends('template.admin')
 @section('konten')
+<style>
+.btn:active,
+.btn:focus,
+.btn:active:focus {
+    box-shadow: none !important;
+}
+.btn-action{
+    border-radius: 50px;
+    font-size: 12px;
+    background-color: #f5f5f5;
+    border: none;
+}
+.view{
+    color: red;
+}
+</style>
+
         <div class="container">
             <div class="card mt-5">
                 <div class="card-header text-center">
-                    Akun user
+                    <h3>Akun user</h3>
                 </div>
                 
                 <div class="card-body">
@@ -18,6 +35,7 @@
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         
@@ -29,8 +47,8 @@
                                 <td>{{ $u->email }}</td>
                                 <td>{{ $u->role }}</td>
                                 <td> 
-                                    <a href="/deleteakun/{{ $u->id }}" class="btn btn-danger">
-                                        <img src="img/icon/trash.png" alt="">
+                                    <a href="/deleteakun/{{ $u->id }}" class="btn btn-action view btn-warning me-2 mr-1">
+                                        <i class="fa-solid fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>

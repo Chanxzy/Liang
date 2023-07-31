@@ -1,5 +1,6 @@
 @extends('template.admin')
 @section('konten')
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
 /* Custom CSS to remove active state effect for buttons */
 .btn:active,
@@ -24,11 +25,54 @@ font-weight: bold;
 .del{
     color: red;
 }
+ /* Custom CSS for the dropdown */
+.custom-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.custom-select {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+/* styles.css */
+.pagination-container {
+    margin-top: 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination .page-link {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
 </style>
         <div class="container">
             <div class="card mt-5">
                 <div class="card-header text-center">
-                Report Villa Liang
+                    <h3>Report Villa Liang</h3>
                 </div>
                 
                 <div class="card-body">
@@ -54,6 +98,16 @@ font-weight: bold;
                                         <label for="end-date">End Date</label>
                                         <input type="date" name="end" class="form-control" id="end-date">
                                     </div>
+                                    <div class="col-md-3">
+                                        <label for="dropdown" class="custom-label">Status Bayar</label>
+                                        <select id="dropdown" name="status" class="custom-select">
+                                            <option value="">pilih</option>
+                                            <option value="sudah">Sudah</option>
+                                            <option value="batal">Batal</option>
+                                            <option value="proses">Proses</option>
+                                            <option value="belum">Belum</option>
+                                        </select>
+                                    </div>
                                     <div class="col-md-1 pt-4">
                                         <button  type="submit" class="btn btn-primary">Filter</button>
                                     </div>
@@ -71,9 +125,9 @@ font-weight: bold;
                                 <th>Jumlah Tamu</th>
                                 <th>Check In</th>
                                 <th>Check Out</th>
-                                <th>Total</th>
                                 <th>Status</th>
                                 <th>Kamar</th>
+                                <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,7 +137,6 @@ font-weight: bold;
                                 <td>{{ $p->jumlah }}</td>
                                 <td>{{ $p->checkin }}</td>
                                 <td>{{ $p->checkout }}</td>
-                                <td>Rp{{ number_format($p->total, 0, ',', '.') }}</td>
                                 <td>
                                     @if ($p->status_bayar == 'sudah')
                                         <button class="btn btn-status btn-success disabled">Sudah</button>
@@ -96,14 +149,26 @@ font-weight: bold;
                                     @endif
                                 </td>
                                 <td>{{ $p->nama_katagori }}</td>
+                                <td>Rp{{ number_format($p->total, 0, ',', '.') }}</td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
-
+                    <!-- Display pagination links -->
+                    <div class="d-flex justify-content-center pagination-container">
+                        {{ $pesanan->links() }}
+                    </div>
                 </div>
             </div>
         </div>
 @endsection
 
+    <script>
+        const dropdown = document.getElementById('dropdown');
+        const selectedOptionText = document.getElementById('selectedOption');
 
+        dropdown.addEventListener('change', function() {
+            const selectedOption = dropdown.value;
+            selectedOptionText.innerText = selectedOption;
+        });
+    </script>
