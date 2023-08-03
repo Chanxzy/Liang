@@ -15,7 +15,7 @@ beberapa navbar tidak mau jalan di beberapa menu (GA NGERTI LAGI)
 
 
 report belom fiks
-kopas nominal diperbaiki
+kopas nominal diperbaiki(done)
 pesan eror tiap form {belom fix}
 full cek ulang buat fix
 
@@ -24,10 +24,11 @@ redirect login untuk yang belum login ketika pesan (sudah)
 disable chekin checkout (sudah)
 bikin histori untuk order (sudah)
 filter status pada report (sudah)
-klo bukti ngga sesuai kasi tampilan order gagal ke user
-buat peringatan estimasi waktu saat bayar
-hapus scan me pada bayar
 
+buat peringatan estimasi waktu saat bayar (sudah)
+hapus scan me pada bayar(sudah)
+benerin front end 
+klo bukti ngga sesuai kasi tampilan order gagal ke user(done)
 
 
 //template keterangan

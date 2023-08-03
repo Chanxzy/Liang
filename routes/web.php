@@ -30,6 +30,7 @@ Route::get('/contact', function(){
     return view('user.contact');
 });
 
+
 Route::middleware(['isadmin'])->group(function(){
     //dashboard
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name("dashboard");
@@ -55,6 +56,7 @@ Route::middleware(['isadmin'])->group(function(){
     Route::get('/updateakun/{id}', [AuthController::class, 'edit'])->name("updateakun.edit");
     Route::post('/updateakun/{id}', [AuthController::class, 'update'])->name("updateakun.update");
     Route::get('/deleteakun/{id}', [AuthController::class, 'destroy'])->name("deleteakun.destroy");
+    
 
     //CRUD Katagori
     Route::get('/tambahkatagori', [KatagoriController::class, 'create'])->name("tambahkatagori");
@@ -63,12 +65,9 @@ Route::middleware(['isadmin'])->group(function(){
     Route::post('/updatekatagori/{id}', [KatagoriController::class, 'update'])->name("updatekatagori.update");
     Route::get('/deletekatagori/{id}', [KatagoriController::class, 'destroy'])->name("deleteakun.destroy");
 
-    //CRUD Pesanan
-    Route::post('/tambahpesanan/{id}', [PesananController::class, 'store'])->name("tambahpesanan.store");
-    Route::post('/uploadbukti/{id}', [PesananController::class, 'uploadbukti'])->name("uploadbukti.uploadbukti");
+    //pesanan
     Route::get('/updatepesanan/{id}', [PesananController::class, 'edit'])->name("updatepesanan.edit");
     Route::post('/updatepesanan/{id}', [PesananController::class, 'update'])->name("updatepesanan.update");
-    Route::post('/deletepesanan/{id}', [PesananController::class, 'destroy'])->name("deletepesanan.destroy");
 
     //CRUD Gambar
     Route::get('/tambahgambar', [GambarController::class, 'create'])->name("tambahgambar");
@@ -82,6 +81,11 @@ Route::middleware(['isuser'])->group(function(){
     Route::get('/detailkamar/{id}', [KamarController::class, 'detailkamar']);
     //order
     Route::get('/order', [PesananController::class, 'order']);
+
+    //CRUD Pesanan
+    Route::post('/tambahpesanan/{id}', [PesananController::class, 'store'])->name("tambahpesanan.store");
+    Route::post('/uploadbukti/{id}', [PesananController::class, 'uploadbukti'])->name("uploadbukti.uploadbukti");
+    Route::post('/deletepesanan/{id}', [PesananController::class, 'destroy'])->name("deletepesanan.destroy");
 });
 
 //AuthController

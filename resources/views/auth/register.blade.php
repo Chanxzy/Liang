@@ -9,9 +9,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script></head>
 
+    <style>
+      .bg-login {
+      /* Set the background image */
+      background-image: url('img/foto/pool/pool.jpg');
+      /* Set the background size and other properties */
+      background-size: cover;
+      background-position: center;
+      /* Set the section to take up the full viewport height */
+      height: 100vh;
+      position: relative;
+    }
+    </style>
 </head>
 <body>
-    <section class="vh-100" style="background-color: #92508a;">
+    <section class="vh-100 bg-login">
         <div class="container h-100">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-lg-6">
@@ -38,6 +50,13 @@
                           <div class="form-outline flex-fill mb-0">
                             <input type="text" id="username" name="username" class="form-control" value="{{ old('username') }}" />
                             <label class="form-label" for="username">Username</label>
+                          </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <div class="form-outline flex-fill mb-0">
+                            <input type="text" id="no_telp" name="no_telp" class="form-control" value="{{ old('no_telp') }}" />
+                            <label class="form-label" for="no_telp">Phone Number</label>
                           </div>
                         </div>
       

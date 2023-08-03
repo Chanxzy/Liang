@@ -80,10 +80,16 @@
                         <div class="form-group">
                             <label>Status Bayar</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" {{ $pesanan->status_bayar=='sudah'?'checked':"" }} name="status_bayar" id="status_bayar">
-                                <label class="form-check-label" for="status_bayar">
+                                <input class="form-check-input" type="radio" {{ $pesanan->status_bayar == 'sudah' ? 'checked' : '' }} name="status_bayar" value="sudah" id="status_bayar_sudah">
+                                <label class="form-check-label" for="status_bayar_sudah">
                                     Sudah
-                                </label>    
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" {{ $pesanan->status_bayar == 'ditolak' ? 'checked' : '' }} name="status_bayar" value="ditolak" id="status_bayar_ditolak">
+                                <label class="form-check-label" for="status_bayar_ditolak">
+                                    Ditolak
+                                </label>
                             </div>
                             @if($errors->has('status_bayar'))
                                 <div class="text-danger">
@@ -91,6 +97,7 @@
                                 </div>
                             @endif
                         </div>
+
                         <div class="form-group">
                             <label>Kamar</label>
                             <input disabled value="{{ $pesanan->nama_katagori }}" name="nama_katagori" class="form-control" placeholder="nama_katagori  ..."></input>

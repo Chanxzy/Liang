@@ -33,6 +33,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Username</th>
+                                <th>Phone Number</th>
                                 <th>Email</th>
                                 <th>Role</th>
                                 <th>Action</th>
@@ -44,6 +45,7 @@
                             <tr>
                                 <td>{{ $u->name }}</td>
                                 <td>{{ $u->username }}</td>
+                                <td>{{ $u->no_telp }}</td>
                                 <td>{{ $u->email }}</td>
                                 <td>{{ $u->role }}</td>
                                 <td> 

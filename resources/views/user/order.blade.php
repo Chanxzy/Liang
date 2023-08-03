@@ -137,6 +137,11 @@
                         <div class="border rounded p-3">
                             <!-- Form fields -->
                             <div class="row">
+                            <div class="form-group">
+                              <div class="border rounded p-2 mb-2">
+                                  <p class="m-0">{{ $p->nama_katagori }} Bedroom</p>
+                              </div>
+                            </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="checkin">Check-in</label>
@@ -167,6 +172,17 @@
                                 <p class="m-0">Rp {{ $p->total }}</p>
                             </div>
                         </div>
+                        @if ($p->status_bayar == 'sudah')
+                            <p class="m-0 text-primary">
+                              *Please check your email
+                            </p>
+                        @endif
+                        @if ($p->status_bayar == 'ditolak')
+                            <p class="m-0 text-danger">
+                              *Please recheck the amount paid
+                            </p>
+                        @endif
+                        
                         </div>
                         <div class="row mt-3 justify-content-center">
                             @if ($p->status_bayar == 'sudah')
@@ -185,6 +201,14 @@
                                             data-target="#orderBatalModal">Order Canceled</button>
                                     </div>
                                 </div>
+                            @elseif ($p->status_bayar == 'ditolak')
+                                <!-- Jika status adalah 'sudah', tampilkan tombol "Order Berhasil" -->
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-warning btn-block" data-toggle="modal"
+                                            data-target="#orderBatalModal">Order Rejected</button>
+                                    </div>
+                                </div>
                             @elseif ($p->status_bayar == 'proses')
                                 <!-- Jika status adalah 'sudah', tampilkan tombol "Order Berhasil" -->
                                 <div class="col">
@@ -198,7 +222,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
-                                            data-target="#bayarModal">Pay</button>
+                                            data-target="#bayarModal{{ $p->id }}">Pay</button>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -224,34 +248,37 @@
     <br>
 
     <!-- Modal -->
-    <div class="modal fade" id="uploadModal{{ $p->id }}" tabindex="-1" role="dialog"
-        aria-labelledby="uploadModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel">Upload Evidence</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Modal content for Upload -->
-                    <form method="post" action="{{ route('uploadbukti.uploadbukti', $p->id) }}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="bukti">Select File:</label>
-                            <input type="file" class="form-control-file" name="bukti" id="bukti">
+    <div class="modal fade" id="uploadModal{{ $p->id }}" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload Evidence</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content for Upload -->
+                <form method="post" action="{{ route('uploadbukti.uploadbukti', $p->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="bukti">Select File:</label>
+                        <input type="file" class="form-control-file" name="bukti" id="bukti"
+                            onchange="previewImage(event,{{ $p->id }})">
+                        <div class="mt-2 d-flex justify-content-center">
+                            <img id="imagePreview{{ $p->id }}" src="#" alt="Image Preview" style="max-width: 100%; max-height: 500px; display: none;">
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Modal for Batal -->
     <form action="{{ route("deletepesanan.destroy", $p->id) }}" method="post">
@@ -277,9 +304,54 @@
       </div>
     </form>
     </div>
+
+    <!-- Modal for Bayar -->
+    <div class="modal fade" id="bayarModal{{ $p->id }}" tabindex="-1" role="dialog" aria-labelledby="bayarModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="bayarModalLabel{{ $p->id }}">Pay</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <!-- Modal content for Bayar -->
+            <p class="text-danger">Please pay for the order before 6 hours from the order process</p>
+            <p class="text-danger">please pay according to the pay amount</p>
+            <div class="mt-5 border rounded">
+              <div class="input-group">
+                  <input type="text" class="form-control disabled" id="payamount{{ $p->id }}" value="Rp {{ $p->total }}" readonly>
+                  <div class="input-group-append">
+                      <button class="btn btn-primary" id="copyButton" onclick="copyPayAmount({{ $p->id }})">
+                        <i class="far fa-copy"></i>
+                      </button>
+                  </div>
+              </div>
+            </div>
+            <div class="mt-2 border rounded">
+              <div class="input-group">
+                  <input type="text" class="form-control disabled" id="textToCopy" value="7721099974" readonly>
+                  <div class="input-group-append">
+                      <button class="btn btn-primary" id="copyButton" onclick="copyText()">
+                        <i class="far fa-copy"></i>
+                      </button>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   @endforeach
   </div>
 
+
+  {{-- order history --}}
   <div class="container">
     <h1 class="text-center mt-5" data-aos="zoom-in">
       <span class="banner1 about">Order History</span>
@@ -308,6 +380,11 @@
                         <div class="border rounded p-3">
                             <!-- Form fields -->
                             <div class="row">
+                            <div class="form-group">
+                              <div class="border rounded p-2 mb-2">
+                                  <p class="m-0">{{ $p->nama_katagori }} Bedroom</p>
+                              </div>
+                            </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="checkin">Check-in</label>
@@ -338,6 +415,17 @@
                                 <p class="m-0">Rp {{ $p->total }}</p>
                             </div>
                         </div>
+                        @if ($p->status_bayar == 'sudah')
+                            <p class="m-0 text-primary">
+                              *Please check your email
+                            </p>
+                        @endif
+                        @if ($p->status_bayar == 'ditolak')
+                            <p class="m-0 text-danger">
+                              *Please recheck the amount paid and confirm to email or admin contact
+                            </p>
+                        @endif
+                        
                         </div>
                         <div class="row mt-3 justify-content-center">
                             @if ($p->status_bayar == 'sudah')
@@ -364,24 +452,12 @@
                                             data-target="#orderProsesModal">On Process</button>
                                     </div>
                                 </div>
-                            @else
-                                <!-- Jika status bukan 'sudah', tampilkan tombol "Bayar", "Upload", dan "Batal" -->
+                            @elseif ($p->status_bayar == 'ditolak')
+                                <!-- Jika status adalah 'sudah', tampilkan tombol "Order Berhasil" -->
                                 <div class="col">
                                     <div class="form-group">
-                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
-                                            data-target="#bayarModal">Pay</button>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
-                                            data-target="#uploadModal{{ $p->id }}">Upload</button>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-danger btn-block" data-toggle="modal"
-                                            data-target="#batalModal{{ $p->id }}">Cancel</button>
+                                        <button type="button" class="btn btn-warning btn-block" data-toggle="modal"
+                                            data-target="#orderDitolakModal">Order Rejected</button>
                                     </div>
                                 </div>
                             @endif
@@ -393,125 +469,86 @@
     </div>
     <br>
     <br>
-
-    <!-- Modal -->
-    <div class="modal fade" id="uploadModal{{ $p->id }}" tabindex="-1" role="dialog"
-        aria-labelledby="uploadModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel">Upload Evidence</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Modal content for Upload -->
-                    <form method="post" action="{{ route('uploadbukti.uploadbukti', $p->id) }}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="bukti">Select File:</label>
-                            <input type="file" class="form-control-file" name="bukti" id="bukti">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Batal -->
-    <form action="{{ route("deletepesanan.destroy", $p->id) }}" method="post">
-      @csrf
-      <div class="modal fade" id="batalModal{{ $p->id }}" tabindex="-1" role="dialog" aria-labelledby="batalModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="batalModalLabel{{ $p->id }}">Confirmation Order Cancel</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to cancel this order?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-            <button type="submit" class="btn btn-primary">Yes</button>
-          </div>
-        </div>
-      </div>
-    </form>
-    </div>
   @endforeach
   </div>
-  <!-- Modal for Bayar -->
-<div class="modal fade" id="bayarModal" tabindex="-1" role="dialog" aria-labelledby="bayarModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="bayarModalLabel">Pay</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-center">
-        <!-- Modal content for Bayar -->
-        <img src="{{ asset ('img/foto/frame.png')}}" alt="QR Code">
-        <div class="mt-5 border rounded">
-          <div class="input-group">
-            <span class="form-control" id="inputText">7721099974</span>
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" onclick="copyInputText()">
-                <i class="far fa-copy"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+  
 
 
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-    function copyInputText() {
-      var inputText = document.getElementById("inputText");
-      var tempInput = document.createElement("input");
-      tempInput.setAttribute("value", inputText.textContent || inputText.innerText);
+  <script>
+    //copy text 
+    function copyText() {
+        var textToCopy = document.getElementById('textToCopy');
+        textToCopy.select();
+        document.execCommand('copy');
+        // Optional: Show a tooltip or message to indicate successful copy
+        var tooltip = document.getElementById('copyTooltip');
+        tooltip.innerHTML = 'Text copied!';
+    }
+
+    //copy text payment
+    function copyPayAmount(id) {
+      // Find the input element
+      const input = document.getElementById(`payamount${id}`);
+      // Extract the numeric value without "Rp" using regular expression
+      const numericValue = input.value.replace(/Rp\s*/, "");
+      // Create a temporary input element and set its value to the numeric value
+      const tempInput = document.createElement("input");
+      tempInput.value = numericValue;
+      // Append the temporary input element to the DOM
       document.body.appendChild(tempInput);
+      // Select the content of the temporary input element
       tempInput.select();
-      document.execCommand("copy");
+      // Use the Clipboard API to copy the selected numeric value to the clipboard
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(numericValue);
+      }
+      // Remove the temporary input element from the DOM
       document.body.removeChild(tempInput);
     }
-</script>
-  <script>
+
+    // Optional: Reset tooltip after a short delay
+    function resetTooltip() {
+        var tooltip = document.getElementById('copyTooltip');
+        tooltip.innerHTML = 'Copy Text';
+    }
+
+    //preview image
+    function previewImage(event,id) {
+        const imagePreview = document.getElementById(`imagePreview${id}`);
+        const fileInput = event.target;
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+
+    //flipcard
     $(document).ready(function() {
       $('.btn-detail').click(function(e) {
         e.preventDefault();
         $(this).closest('.card').find('.card-inner').toggleClass('flipped');
       });
     });
-    
   </script>
 
 
-
-
-
   @include('partial.footer')
+  <!-- Aktifkan tooltip -->
+  <script>
+      $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();
+      });
+  </script>
 </body>
 
 </html>

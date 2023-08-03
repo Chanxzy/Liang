@@ -70,6 +70,7 @@ class AuthController extends Controller
             'username' => $request->input('username'),
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'no_telp' => $request->input('no_telp'),
             'password' => bcrypt($request->input('password')),
         ]);
 
@@ -85,6 +86,7 @@ class AuthController extends Controller
         $role = User::create([
             'role' => $request->input('role'),
             'username' => $request->input('username'),
+            'no_telp' => $request->input('no_telp'),
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
@@ -116,6 +118,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->input('name'),
             'username' => $request->input('username'),
+            'no_telp' => $request->input('no_telp'),
             'email' => $request->input('email'),
             'password' => $request->input('password'),
         ]);
@@ -142,6 +145,7 @@ class AuthController extends Controller
         $user = User::findOrFail($id);
         $user->name = $request->input('name');
         $user->username = $request->input('username');
+        $user->no_telp = $request->input('no_telp');
         $user->email = $request->input('email');
         $user->password = $request->input('password');
         $user->save();
@@ -201,6 +205,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect('/');
     }
 }

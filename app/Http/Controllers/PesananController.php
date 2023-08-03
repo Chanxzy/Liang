@@ -51,7 +51,7 @@ class PesananController extends Controller
         $kamar = Kamar::findOrFail($id);
         
         // Check ketersediaan kamar
-        $checkbooking = Pesanan::where(function ($query) use ($request) {
+        $checkbooking = Pesanan::where('id_kamar', '=', $kamar->id)->where(function ($query) use ($request) {
             $query->where('checkin', '<=', $request->input('checkout'))
                 ->where('checkout', '>=', $request->input('checkin'));
             })->get();
@@ -92,8 +92,17 @@ class PesananController extends Controller
     public function order()
     {
         if (Auth::check()) {
-            $orderbaru = Pesanan::where('id_pelanggan', Auth::user()->id)->whereIn('status_bayar',['belum', 'proses'])->get();
-            $orderlama = Pesanan::where('id_pelanggan', Auth::user()->id)->whereIn('status_bayar',['batal', 'sudah'])->get();
+            $orderbaru = Pesanan::join('kamar', 'pesanan.id_kamar', '=', 'kamar.id')
+            ->join('users', 'pesanan.id_pelanggan', '=', 'users.id')
+            ->join('katagori', 'kamar.katagori_id', '=', 'katagori.id')
+            ->select('pesanan.id as id', 'kamar.*', 'users.*', 'katagori.*', 'pesanan.*')
+            ->where('id_pelanggan', Auth::user()->id)->whereIn('status_bayar',['belum', 'proses'])->get();
+
+            $orderlama = Pesanan::join('kamar', 'pesanan.id_kamar', '=', 'kamar.id')
+            ->join('users', 'pesanan.id_pelanggan', '=', 'users.id')
+            ->join('katagori', 'kamar.katagori_id', '=', 'katagori.id')
+            ->select('pesanan.id as id', 'kamar.*', 'users.*', 'katagori.*', 'pesanan.*')
+            ->where('id_pelanggan', Auth::user()->id)->whereIn('status_bayar',['batal', 'sudah','ditolak'])->get();
         }else{
             
             return redirect('/login');
@@ -103,6 +112,7 @@ class PesananController extends Controller
     }
 
     public function uploadbukti(Request $request, string $id){
+
         $bukti = Pesanan::findOrFail($id);
         if ($request->hasFile('bukti')) {
             $filename = $request->file('bukti')->getClientOriginalName();
@@ -155,11 +165,11 @@ class PesananController extends Controller
             ->select('pesanan.id as pesanan_id', 'kamar.*', 'users.*', 'katagori.*', 'pesanan.*')
             ->first();
 
-        $status_bayar = $request->input('status_bayar') == 'on' ? 'sudah' : 'belum';
-        $pesanan->status_bayar = $status_bayar;
+        
+        $pesanan->status_bayar = $request->input('status_bayar');
 
         // Save the changes to the database
-        DB::table('pesanan')->where('id', $pesanan->pesanan_id)->update(['status_bayar' => $status_bayar]);
+        DB::table('pesanan')->where('id', $pesanan->pesanan_id)->update(['status_bayar' => $request->input('status_bayar')]);
         Mail::to($pesanan->email)->send(new EmailCustomer(['pesanan'=>$pesanan]));
 
         return redirect('pesanan');

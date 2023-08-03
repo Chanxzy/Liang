@@ -62,13 +62,15 @@ font-weight: bold;
             <td>
                 <img src="{{ $p->bukti }}" style="max-width: 80px" alt="">
             </td>
-            <td>
+            <td class="center" style="text-align: center;">
                 @if ($p->status_bayar == 'sudah')
                     <button class="btn btn-status btn-success disabled">Sudah</button>
                 @elseif ($p->status_bayar == 'batal')
                     <button class="btn btn-status btn-danger disabled">Batal</button>
                 @elseif ($p->status_bayar == 'proses')
                     <button class="btn btn-status btn-primary disabled">Process</button>
+                @elseif ($p->status_bayar == 'ditolak')
+                    <button class="btn btn-status btn-danger disabled">Ditolak</button>
                 @else
                     <button class="btn btn-status btn-warning disabled">Belum</button>
                 @endif

@@ -97,19 +97,19 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="checkin">Check-in</label>
-                                                <input type="date" id="checkin" name="checkin" class="mt-3 form-control">
+                                                <input type="date" id="checkin" name="checkin" class="mt-3 form-control" required>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="checkout">Check-out</label>
-                                                <input type="date" id="checkout" name="checkout" class="mt-3 form-control">
+                                                <input type="date" id="checkout" name="checkout" class="mt-3 form-control" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="mt-3 mb-3" for="jumlah">Visitors</label>
-                                        <input type="number" id="jumlah" name="jumlah" class="form-control" placeholder="Enter the number of visitors">
+                                        <input type="number" id="jumlah" name="jumlah" class="form-control" placeholder="Enter the number of visitors" required>
                                     </div>
                                 </div>
                             </div>

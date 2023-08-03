@@ -41,6 +41,15 @@
                                 </div>
                             @endif
                         </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input  name="no_telp" class="form-control"  placeholder="no_telp">
+                            @if($errors->has('no_telp'))
+                                <div class="text-danger">
+                                    {{ $errors->first('no_telp')}}
+                                </div>
+                            @endif
+                        </div>
                         
                         <div class="form-group">
                             <label>Email</label>

@@ -9,9 +9,9 @@
     box-shadow: none !important;
 }
 .btn-status{
-border-radius: 50px;
-font-size: 12px;
-font-weight: bold;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: bold;
 }
 .btn-action{
     border-radius: 50px;
@@ -25,7 +25,7 @@ font-weight: bold;
 .del{
     color: red;
 }
- /* Custom CSS for the dropdown */
+/* Custom CSS for the dropdown */
 .custom-label {
     font-weight: bold;
     margin-bottom: 5px;
@@ -40,33 +40,7 @@ font-weight: bold;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
 }
-/* styles.css */
-.pagination-container {
-    margin-top: 20px;
-}
 
-.pagination {
-    display: flex;
-    justify-content: center;
-}
-
-.pagination .page-item {
-    margin: 0 5px;
-}
-
-.pagination .page-link {
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    background-color: #f8f8f8;
-    color: #333;
-    transition: background-color 0.3s ease;
-}
-
-.pagination .page-link:hover {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
-}
 
 </style>
         <div class="container">
